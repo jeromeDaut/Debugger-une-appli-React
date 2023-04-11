@@ -13,7 +13,13 @@ import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
-  const {last} = useData()
+  // ________________________________________________________________
+  // classe la date par ordre décroissant
+  const {data} = useData();
+  const last = data?.events.sort(
+    (evtA, evtB) => new Date(evtB.date) - new Date( evtA.date)
+  )[0];
+  // ________________________________________________________________
   return <>
     <header>
       <Menu />
@@ -94,23 +100,24 @@ const Page = () => {
       <div className="FormContainer" id="contact">
         <h2 className="Title">Contact</h2>
         <Modal
-          Content={
-            <div className="ModalMessage--success">
-              <div>Message envoyé !</div>
-              <p>
-                Merci pour votre message nous tâcherons de vous répondre dans
-                les plus brefs délais
-              </p>
-            </div>
-          }
-        >
-          {({ setIsOpened }) => (
-            <Form
-              onSuccess={() => setIsOpened(true)}
-              onError={() => null}
-            />
-          )}
-        </Modal>
+  Content={
+    <div className="ModalMessage--success">
+      <div>Message envoyé !</div>
+      <p>
+        Merci pour votre message nous tâcherons de vous répondre dans
+        les plus brefs délais
+      </p>
+    </div>
+  }
+>
+  {({ setIsOpened }) => (
+    <Form
+      onSuccess={() => setIsOpened(true)}
+      onError={() => null}
+      onSubmitSuccess={() => setIsOpened(true)}
+    />
+  )}
+</Modal>
       </div>
     </main>
     <footer className="row">
