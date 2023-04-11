@@ -5,9 +5,9 @@ import Select from "../../components/Select";
 import Button, { BUTTON_TYPES } from "../../components/Button";
 
 const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 1000); })
-
+// ajout onSubmitSuccess
 // eslint-disable-next-line react/prop-types
-const Form = ({ onSuccess, onError, onSubmitSuccess }) => {
+const Form = ({ onSuccess, onError}) => {
   const [sending, setSending] = useState(false);
   const sendContact = useCallback(
     async (evt) => {
@@ -17,13 +17,14 @@ const Form = ({ onSuccess, onError, onSubmitSuccess }) => {
       try {
         await mockContactApi();
         setSending(false);
-        onSubmitSuccess();
+        // onSubmitSuccess
+        onSuccess();
       } catch (err) {
         setSending(false);
         onError(err);
       }
     },
-    [onSuccess, onError, onSubmitSuccess]
+    [onSuccess, onError]
   );
   return (
     <form onSubmit={sendContact}>
