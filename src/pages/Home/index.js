@@ -114,7 +114,6 @@ const Page = () => {
     <Form
       onSuccess={() => setIsOpened(true)}
       onError={() => null}
-      onSubmitSuccess={() => setIsOpened(true)}
     />
   )}
 </Modal>
