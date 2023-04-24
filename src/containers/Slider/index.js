@@ -8,12 +8,14 @@ const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
+  // _________________________________________
     new Date(evtB.date) - new Date(evtA.date)
+    // _______________________________________
   );
   const nextCard = () => {
     setTimeout(
       () => setIndex(index + 1 < byDateDesc?.length ? index + 1 : 0),
-      //  ajout du ? byDateDesc et index+1
+      //  ajout du ? byDateDesc pour verifier si byDateDesc existe et si index +1 est inférieur à la longueur de byDateDesc
       5000
     );
   };
@@ -22,10 +24,11 @@ const Slider = () => {
   });
   return (
     <div className="SlideCardList">
+    {/* suppression des <></> qui encapsulait 2 éléments différents ce qui créait des problèmes */}
       {byDateDesc?.map((event, idx) => (
-        <>
+        <div key={event.date}>
+            
           <div
-            key={event.date}
             className={`SlideCard SlideCard--${
               index === idx ? "display" : "hide"
             }`}
@@ -47,11 +50,12 @@ const Slider = () => {
                   type="radio"
                   name="radio-button"
                   checked={index === radioIdx}
+                  readOnly
                 />
               ))}
             </div>
           </div>
-        </>
+        </div>
       ))}
     </div>
   );
