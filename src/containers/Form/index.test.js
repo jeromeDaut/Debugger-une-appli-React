@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
 import Form from "./index";
 
 describe("When Events is created", () => {
@@ -22,6 +22,7 @@ describe("When Events is created", () => {
         })
       );
       await screen.findByText("En cours");
+      act(()=>jest.advanceTimersByTime(1000))
       await screen.findByText("Envoyer");
       expect(onSuccess).toHaveBeenCalled();
     });
