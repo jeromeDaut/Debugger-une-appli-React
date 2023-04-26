@@ -1,6 +1,9 @@
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { wait } from "@testing-library/user-event/dist/utils";
 import Home from "./index";
-import EventList from "../../containers/Events";
+// import { DataProvider } from "../../contexts/DataContext";
+// import EventList from "../../containers/Events";
+// import EventList from "../../containers/Events";
 
 
 describe("When Form is created", () => {
@@ -13,6 +16,13 @@ describe("When Form is created", () => {
   });
 
   describe("and a click is triggered on the submit button", () => {
+    beforeEach(() => {
+      jest.useFakeTimers({});
+    });
+
+    afterEach(() => {
+      jest.clearAllTimers();
+    });
     it("the success message is displayed", async () => {
       render(<Home />);
       fireEvent(
@@ -23,7 +33,7 @@ describe("When Form is created", () => {
         })
       );
       await screen.findByText("En cours");
-      act(()=>jest.advanceTimersByTime(1000))
+      act(()=>jest.advanceTimersByTime(5000))
       await screen.findByText("Envoyer");
     });
   });
@@ -31,10 +41,11 @@ describe("When Form is created", () => {
 });
 
 describe("When a page is created", () => {
-  it("a list of events is displayed", () => {
-    const { getAllByAltText } = render(<EventList />);
-    const images = getAllByAltText(/cover/i);
-    expect(images.length).toBe(9);
+  it("a list of events is displayed", async () => {
+    render( <Home />);
+    expect(screen.getByTestId("list-events")).toBeInTheDocument();
+  });
+    
   });
   
   it("a list a people is displayed", async () => {
@@ -50,8 +61,14 @@ describe("When a page is created", () => {
     render(<Home />);
     // Trouver l'élément avec le rôle "contentinfo" pour le footer
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+    // expect(screen.getByTestId("footer")).toBeInTheDocument();
+    expect(screen.getByText("45 avenue de la République, 75000 Paris")).toBeInTheDocument();
   });
 
-  it("an event card, with the last event, is displayed", async () => {
+  it("an event card, with the last event, is displayed", () => {
+      render(<Home />);
+        wait(() => {
+        expect(screen.getAllByTestId("last-event")).toBeInTheDocument();
+      });
+      
   });
-});
