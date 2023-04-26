@@ -11,6 +11,13 @@ describe("When Events is created", () => {
   });
 
   describe("and a click is triggered on the submit button", () => {
+    beforeEach(() => {
+      jest.useFakeTimers({});
+    });
+
+    afterEach(() => {
+      jest.clearAllTimers();
+    });
     it("the success action is called", async () => {
       const onSuccess = jest.fn();
       render(<Form onSuccess={onSuccess} />);
@@ -22,7 +29,7 @@ describe("When Events is created", () => {
         })
       );
       await screen.findByText("En cours");
-      act(()=>jest.advanceTimersByTime(1000))
+      act(()=>jest.advanceTimersByTime(5000))
       await screen.findByText("Envoyer");
       expect(onSuccess).toHaveBeenCalled();
     });
