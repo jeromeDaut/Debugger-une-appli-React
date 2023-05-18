@@ -1,6 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
 import Slider from "./index";
 import { api, DataProvider } from "../../contexts/DataContext";
+
+
 
 const data = {
   focus: [
@@ -37,8 +40,39 @@ describe("When slider is created", () => {
     );
     await screen.findByText("World economic forum");
     await screen.findByText("janvier");
-    await screen.findByText(
-      "Oeuvre à la coopération entre le secteur public et le privé."
+    await screen.findByText("Oeuvre à la coopération entre le secteur public et le privé.");
+  });
+
+  // ajout du test fonctionnel=================================================================
+
+  it("affiche les cartes du slider et passe à la carte suivante après un délai", async () => {
+    render(
+      <DataProvider>
+        <Slider />
+      </DataProvider>
     );
+    window.console.error = jest.fn();
+    api.loadData = jest.fn().mockReturnValue(data);
+    // Vérification de l'affichage de la première carte
+    const event1Title = await screen.findByText("World economic forum");
+    const event1Description = await screen.findByText("Oeuvre à la coopération entre le secteur public et le privé.");
+    expect(event1Title).toBeInTheDocument();
+    expect(event1Description).toBeInTheDocument();
+
+    // Attendez que la deuxième carte soit affichée après le délai
+    await waitFor(() => {
+      const event2Title = screen.getByText("World Gaming Day");
+      const event2Description = screen.getByText("Evenement mondial autour du gaming");
+      expect(event2Title).toBeInTheDocument();
+      expect(event2Description).toBeInTheDocument();
+    }, { timeout: 6000 }); 
+
+    // Attendez que la troisième carte soit affichée après le délai
+    await waitFor(() => {
+      const event3Title = screen.getByText("World Farming Day");
+      const event3Description = screen.getByText("Evenement mondial autour de la ferme");
+      expect(event3Title).toBeInTheDocument();
+      expect(event3Description).toBeInTheDocument();
+    }, { timeout: 11000 }); 
   });
 });
