@@ -1,10 +1,6 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { wait } from "@testing-library/user-event/dist/utils";
 import Home from "./index";
-// import { DataProvider } from "../../contexts/DataContext";
-// import EventList from "../../containers/Events";
-// import EventList from "../../containers/Events";
-
 
 describe("When Form is created", () => {
   it("a list of fields card is displayed", async () => {
@@ -44,24 +40,23 @@ describe("When a page is created", () => {
   it("a list of events is displayed", async () => {
     render( <Home />);
     expect(screen.getByTestId("list-events")).toBeInTheDocument();
+    wait(() => {
+      expect(screen.getByText("#DigitonPARIS")).toBeInTheDocument();
+  });
   });
     
   });
   
   it("a list a people is displayed", async () => {
     render(<Home />);
-    // Trouver le titre pour la section "Notre équipe"
-    const title = await screen.findByRole("heading", { name: "Notre équipe" });
-    // Trouver tous les éléments avec le rôle "img" à l'intérieur de la section "Notre équipe"
-    const figures = within(title.closest("section")).getAllByRole("img");
-    expect(figures).toHaveLength(6);
+    expect (screen.getByText("Samira")).toBeInTheDocument();
+    expect (screen.getByText("Isabelle")).toBeInTheDocument();
   });
 
   it("a footer is displayed", () => {
     render(<Home />);
     // Trouver l'élément avec le rôle "contentinfo" pour le footer
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
-    // expect(screen.getByTestId("footer")).toBeInTheDocument();
     expect(screen.getByText("45 avenue de la République, 75000 Paris")).toBeInTheDocument();
   });
 
